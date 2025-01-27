@@ -1,59 +1,47 @@
 flowchart TB
-    subgraph CLI["Aura CLI Interface"]
+ subgraph AuraCLI["Aura CLI Tool"]
+    direction TB
         Commands["CLI Commands"]
         Config["Configuration Manager"]
-    end
-
-    subgraph GraphQL["GraphQL Processing"]
-        Schema["Schema Parser"]
-        TypeDef["Type Definitions"]
-        Validator["Schema Validator"]
-        Generator["Cypher Generator"]
-    end
-
-    subgraph AuraManager["Aura Management Layer"]
-        Provisioner["Instance Provisioner"]
-        Credentials["Credential Manager"]
-        Lifecycle["Lifecycle Controller"]
-    end
-
-    subgraph AuraDB["Neo4j Aura"]
-        Instance["Database Instance"]
+        TypeDefInput["Type Definition Input"]
+  end
+ subgraph DataAPIManager["Data API Management"]
+    direction TB
+        CreateAPI["Create GraphQL API"]
+        AuthConfig["Auth Provider Config"]
+        StatusPoll["Status Polling"]
+  end
+ subgraph Status["Status"]
+        Ready["Ready"]
+        Creating["Creating"]
+        Paused["Paused"]
+        Error["Error"]
+  end
+ subgraph AuraService["Aura Data API Service"]
+        APIEndpoint["GraphQL API Endpoint"]
         Auth["Authentication"]
-    end
-
-    %% User input flows
-    User(("User")) -->|"(1) CLI Commands"| Commands
-    User -->|"(2) GraphQL Schema"| Schema
-
-    %% CLI Processing
-    Commands -->|"Parse Command"| Config
-    Config -->|"Configure"| Provisioner
-    Config -->|"Manage"| Credentials
-
-    %% GraphQL Processing
-    Schema -->|"(3) Parse"| TypeDef
-    TypeDef -->|"(4) Validate"| Validator
-    Validator -->|"(5) Generate"| Generator
-
-    %% Aura Integration
-    Generator -->|"(6) DB Structure"| Provisioner
-    Provisioner -->|"(7) Create/Update"| Instance
-    Credentials -->|"(8) Secure Access"| Auth
-    Lifecycle -->|"(9) Manage State"| Instance
-
-    %% Return flows
-    Instance -.->|"Status"| Commands
-    Auth -.->|"Connections"| Credentials
-
-    classDef user fill:#f9f9f9,stroke:#333
+        Status
+  end
+    CreateAPI -- Default --> AuthConfig
+    CreateAPI --> StatusPoll
+    User["User"] -- (1) CLI commands --> Commands
+    User -- (2) GraphQL schema file\nor base64 content --> TypeDefInput
+    Commands -- Beta feature check --> Config
+    Config -- Credentials --> CreateAPI
+    TypeDefInput -- (3) Schema definitions --> CreateAPI
+    CreateAPI -- (4) POST request --> APIEndpoint
+    AuthConfig -- (5) API Key/JWKS --> Auth
+    StatusPoll -- "(6) Poll if --await" --> Status
+    Status -. (7) Status updates .-> Commands
+    APIEndpoint -. (8) URL & Auth details .-> Commands
+    Auth -. (9) Credentials .-> Commands
+     User:::user
+     AuraCLI:::cli
+     DataAPIManager:::manager
+     AuraService:::service
+    classDef user fill:#e3f2fd,stroke:#333
     classDef cli fill:#e3f2fd,stroke:#1565c0
-    classDef graphql fill:#f3e5f5,stroke:#7b1fa2
     classDef manager fill:#e8f5e9,stroke:#2e7d32
-    classDef db fill:#ede7f6,stroke:#4527a0
-
-    class User user
-    class Commands,Config cli
-    class Schema,TypeDef,Validator,Generator graphql
-    class Provisioner,Credentials,Lifecycle manager
-    class Instance,Auth db
+    classDef service fill:#ede7f6,stroke:#4527a0
+    style TypeDefInput fill:#e3f2fd
+    style User fill:#FFFFFF

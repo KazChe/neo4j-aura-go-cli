@@ -1,0 +1,59 @@
+flowchart TB
+    subgraph CLI["Aura CLI Interface"]
+        Commands["CLI Commands"]
+        Config["Configuration Manager"]
+    end
+
+    subgraph GraphQL["GraphQL Processing"]
+        Schema["Schema Parser"]
+        TypeDef["Type Definitions"]
+        Validator["Schema Validator"]
+        Generator["Cypher Generator"]
+    end
+
+    subgraph AuraManager["Aura Management Layer"]
+        Provisioner["Instance Provisioner"]
+        Credentials["Credential Manager"]
+        Lifecycle["Lifecycle Controller"]
+    end
+
+    subgraph AuraDB["Neo4j Aura"]
+        Instance["Database Instance"]
+        Auth["Authentication"]
+    end
+
+    %% User input flows
+    User(("User")) -->|"1. CLI Commands"| Commands
+    User -->|"2. GraphQL Schema"| Schema
+
+    %% CLI Processing
+    Commands -->|"Parse Command"| Config
+    Config -->|"Configure"| Provisioner
+    Config -->|"Manage"| Credentials
+
+    %% GraphQL Processing
+    Schema -->|"3. Parse"| TypeDef
+    TypeDef -->|"4. Validate"| Validator
+    Validator -->|"5. Generate"| Generator
+
+    %% Aura Integration
+    Generator -->|"6. DB Structure"| Provisioner
+    Provisioner -->|"7. Create/Update"| Instance
+    Credentials -->|"8. Secure Access"| Auth
+    Lifecycle -->|"9. Manage State"| Instance
+
+    %% Return flows
+    Instance -.->|"Status"| Commands
+    Auth -.->|"Connections"| Credentials
+
+    classDef user fill:#f9f9f9,stroke:#333
+    classDef cli fill:#e3f2fd,stroke:#1565c0
+    classDef graphql fill:#f3e5f5,stroke:#7b1fa2
+    classDef manager fill:#e8f5e9,stroke:#2e7d32
+    classDef db fill:#ede7f6,stroke:#4527a0
+
+    class User user
+    class Commands,Config cli
+    class Schema,TypeDef,Validator,Generator graphql
+    class Provisioner,Credentials,Lifecycle manager
+    class Instance,Auth db

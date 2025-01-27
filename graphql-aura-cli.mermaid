@@ -23,8 +23,8 @@ flowchart TB
     end
 
     %% User input flows
-    User(("User")) -->|"1. CLI Commands"| Commands
-    User -->|"2. GraphQL Schema"| Schema
+    User(("User")) -->|"(1) CLI Commands"| Commands
+    User -->|"(2) GraphQL Schema"| Schema
 
     %% CLI Processing
     Commands -->|"Parse Command"| Config
@@ -32,15 +32,15 @@ flowchart TB
     Config -->|"Manage"| Credentials
 
     %% GraphQL Processing
-    Schema -->|"3. Parse"| TypeDef
-    TypeDef -->|"4. Validate"| Validator
-    Validator -->|"5. Generate"| Generator
+    Schema -->|"(3) Parse"| TypeDef
+    TypeDef -->|"(4) Validate"| Validator
+    Validator -->|"(5) Generate"| Generator
 
     %% Aura Integration
-    Generator -->|"6. DB Structure"| Provisioner
-    Provisioner -->|"7. Create/Update"| Instance
-    Credentials -->|"8. Secure Access"| Auth
-    Lifecycle -->|"9. Manage State"| Instance
+    Generator -->|"(6) DB Structure"| Provisioner
+    Provisioner -->|"(7) Create/Update"| Instance
+    Credentials -->|"(8) Secure Access"| Auth
+    Lifecycle -->|"(9) Manage State"| Instance
 
     %% Return flows
     Instance -.->|"Status"| Commands

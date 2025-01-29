@@ -24,6 +24,7 @@ flowchart TB
   end
     CreateAPI -- Default --> AuthConfig
     CreateAPI --> StatusPoll
+    A@{shape: comment, label: Entry Point neo4j-cli/aura/cmd/main.go and neo4j-cli/aura/aura.go} 
     User["User"] -- (1) CLI commands --> Commands
     User -- (2) GraphQL schema file\nor base64 content --> TypeDefInput
     Commands -- Beta feature check --> Config

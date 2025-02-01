@@ -90,28 +90,42 @@ this file defines custom error types for the CLI application. It provides three 
 - Operation cannot be completed
 
 
-#### `clicmd` directory
-The clicmd directory contains code for handling commands in the CLI.
-
-
-
 #### `neo4j-cli` directory
+
 
 #### `neo4j-cli/cli/main.go`
 
 #### `neo4j-cli/aura` directory
+Contains the core Neo4j Aura-specific CLI implementations
 
-#### `neo4j-cli/aura/cmd` directory
+#### `neo4j-cli/aura/cmd` directory //TODO: dig deeper
+/cmd: Command definitions
+- Root Aura command
+- Subcommands for instance, backup, user 
+- Command factories and builders
 
-#### `neo4j-cli/aura/cmd` directory
 
 #### `neo4j-cli/aura/internal` directory
+implementation details
 
 #### `neo4j-cli/aura/internal/api` directory
+- Aura API clients and models
+- Instance management
+- Backup operations
+- User management
+GraphQL operations
 
 #### `neo4j-cli/aura/internal/flags` directory
+Contains command-line flag definitions like
+- Common flags
+- Instance flags
+- Output format flags
 
 #### `neo4j-cli/aura/internal/output` directory
+Implementations for various output formatting logic
+- Table formatting
+- JSON output
+- Error presentation
 
 #### `neo4j-cli/aura/internal/subcommands` directory
 

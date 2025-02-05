@@ -26,7 +26,7 @@ Command to remove credential by name:
 //TODO: add links to individual code
 //TODO: clean up markdown for codebase directory-code for mo'better aesthetics
 
-link to codebase - https://github.com/neo4j/neo4j-cli/tree/main/aura-cli
+link to codebase - https://github.com/neo4j/aura-cli
 
 ### `aura-cli/common` directory
 
@@ -195,6 +195,7 @@ Create a .vscode/launch.json file:
   ]
 }
 ```
+
 running the debug `Debug Credential Add` here we can see that aura-cli stores the credentials in the credentials.json file on a MacOS under the following path
 
 ![Debug Aura CLI](./images/Debug_Credential_Add.png)
@@ -204,6 +205,7 @@ this test is using the `Debug_Credentials_Test` name and the `AURA_CLIENT_ID` an
 ```bash
 go run neo4j-cli/main.go
 ```
+
 ```bash
 Allows you to manage Neo4j resources
 
@@ -222,10 +224,23 @@ Flags:
 Use "neo4j-cli [command] --help" for more information about a command.
 ```
 
-
 so for equivalent of the debug test above you can run the following command to add your credentials: (requires .env file, and an aura client id and secret you should have already created in your aura console)
 
 ```bash
 go run neo4j-cli/main.gocredential add --name Debug_Credentials_Test --client-id ${AURA_CLIENT_ID} --client-secret ${AURA_CLIENT_SECRET}
 ```
 
+You can read back your stored credentials using subcommand `get`
+
+```bash
+% go run neo4j-cli/main.go aura-cli credential list | jq 'walk(if type == "string" then (.[:5] +"*****") else . end)'
+[
+  {
+    "name": "Debug*****",
+    "client-id": "*****",
+    "client-secret": "*****",
+    "access-token": "*****",
+    "token-expiry": 0
+  }
+]
+```

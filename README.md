@@ -244,3 +244,10 @@ You can read back your stored credentials using subcommand `get`
   }
 ]
 ```
+
+## High Level Architecture
+
+![Aura CLI Architecture](./images/aura-go-cli-high-level-component-architecture.png)
+
+
+

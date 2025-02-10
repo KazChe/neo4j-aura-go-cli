@@ -1,0 +1,35 @@
+graph TD
+    CLI[CLI Entry Point] --> Commands[Command Layer]
+    Commands --> CredentialMgr[Credential Manager]
+    Commands --> APIClient[API Client]
+    Commands --> ConfigMgr[Config Manager]
+    
+    CredentialMgr --> FileSystem[(Local File System)]
+    CredentialMgr --> TokenMgr[Token Manager]
+    
+    TokenMgr --> AuraAuth[Aura Auth API]
+    APIClient --> AuraAPI[Aura REST API]
+    
+    subgraph "Local Components"
+        CLI
+        Commands
+        CredentialMgr
+        APIClient
+        ConfigMgr
+        TokenMgr
+        FileSystem
+    end
+    
+    subgraph "Neo4j Aura APIs"
+        AuraAuth
+        AuraAPI
+    end
+
+    %% Command flows
+    Commands -->|instance| APIClient
+    Commands -->|credential| CredentialMgr
+    Commands -->|config| ConfigMgr
+    
+    %% Auth flow
+    APIClient -->|get token| TokenMgr
+    TokenMgr -->|validate| CredentialMgr

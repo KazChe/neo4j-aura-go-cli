@@ -250,4 +250,24 @@ You can read back your stored credentials using subcommand `get`
 ![Aura CLI Architecture](./images/aura-go-cli-high-level-component-architecture.png)
 
 
+## Instance Management
 
+/instance
+├── create.go       # instance creation
+├── delete.go       # instance deletion
+├── get.go         # get instance details
+├── instance.go    # main instance command
+├── list.go        # list instances
+└── snapshot/      # snapshot management
+    ├── create.go
+    ├── get.go
+    ├── list.go
+    └── snapshot.go
+
+
+
+### Creation/Deletion
+Sizing/Scaling
+Backups/Snapshots
+CMEK integration (we started this)
+Status monitoring
